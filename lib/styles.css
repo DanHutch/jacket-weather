@@ -18,6 +18,7 @@ body {
 .active:hover {
     background-color: #522b47;
     color: #8daa9d;
+    cursor:pointer;
 }
 
 .titlebar {
