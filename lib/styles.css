@@ -7,13 +7,17 @@ body {
 }
 
 .button {
-  background-color: 6e7271;
+  background-color: #6e7271;
   color: #522b47;
 }
 
-.active:hover {
+.active {
   background-color: #8daa9d;
+}
 
+.active:hover {
+    background-color: #522b47;
+    color: #8daa9d;
 }
 
 .titlebar {
