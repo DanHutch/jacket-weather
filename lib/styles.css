@@ -82,6 +82,11 @@ h4 {
   width: 2fr;
 }
 
+.snapshot {
+  display: flex;
+  flex-direction: row;
+}
+
 .item2 {
   height: auto;
   width: 2fr;
@@ -127,4 +132,36 @@ h4 {
 .hourly p {
   margin: 10px 0;
 }
+
+.time-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex: 1;
+}
+
+.time-box p {
+  margin: 5px;
+}
+
+.snapshot-box p {
+  margin: 5px;
+}
+
+.snapshot-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex: 1;
+}
+
+.city-state {
+  font-size: 30px;
+}
+
+.current-temp-summary {
+  font-size: 40px;
+}
+
+
 
