@@ -16,9 +16,9 @@ body {
 }
 
 .active:hover {
-    background-color: #522b47;
-    color: #8daa9d;
-    cursor:pointer;
+  background-color: #522b47;
+  color: #8daa9d;
+  cursor:pointer;
 }
 
 .titlebar {
@@ -78,17 +78,53 @@ h4 {
 }
 
 .item1 {
-  height: 300px;
+  height: auto;
   width: 2fr;
 }
 
 .item2 {
+  height: auto;
   width: 2fr;
 }
 
 .item3 {
-  height: 420px;
+  height: auto;
   width: 1fr;
   grid-column: span 2;
+}
+
+.hourly-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 0 10px;
+}
+
+.daily-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 0 10px;
+}
+
+.daily {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 12px;
+}
+
+.daily p {
+  max-width: 125px;
+}
+
+.hourly {
+  font-size: 14px;
+  flex: 1;
+}
+
+.hourly p {
+  margin: 10px 0;
 }
 
