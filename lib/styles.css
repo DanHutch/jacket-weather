@@ -25,6 +25,8 @@ body {
   width: 100%;
   background-color: #522b47;
   margin-block-end: 10px;
+  text-align: left;
+  /* align-content: space-around; */
 }
 
 .title {
@@ -35,6 +37,13 @@ body {
   margin-right: 0px;
   font-size: 40px;
   height: 60px;
+  display: inline;
+  text-align: left;
+}
+
+.login {
+  display: inline;
+  text-align: right;
 }
 
 .sub-title {

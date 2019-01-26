@@ -63,13 +63,36 @@
 	    }
 	  };
 
+	  var checkLoginActive = function checkLoginActive() {
+	    if (loginEmail.value !== "" && loginPassword.value !== "" && sessionStorage.getItem("userKey") == null) {
+	      loginButton.disabled = false;
+	      loginButton.classList.add("active");
+	    } else {
+	      loginButton.disabled = true;
+	      loginButton.classList.remove("active");
+	    }
+	  };
+
 	  var getAndSetWeather = function getAndSetWeather() {
-	    weather = new WeatherGetter();
+	    var weather = new WeatherGetter();
 	    weather.getWeather(locationInput.value);
+	  };
+
+	  var sendLoginRequest = function sendLoginRequest() {
+	    if (sessionStorage.getItem("userKey") !== null) {
+	      alert("Already logged in.");
+	    } else {
+	      var weather = new WeatherGetter();
+	      weather.sendLogin(loginEmail.value, loginPassword.value);
+	    }
 	  };
 
 	  var weatherButton = document.querySelector('.weather-button');
 	  var locationInput = document.querySelector('.location-field');
+	  var loginButton = document.querySelector('.login-button');
+	  var loginEmail = document.querySelector('.login-email');
+	  var loginPassword = document.querySelector('.login-password');
+
 	  var timeBox = document.querySelector('.time-box');
 	  var snapshotBox = document.querySelector('.snapshot-box');
 	  var box1 = document.querySelector('.item1');
@@ -87,12 +110,31 @@
 	    }
 
 	    _createClass(WeatherGetter, [{
+	      key: 'sendLogin',
+	      value: function sendLogin(email, password) {
+	        var xhr = new XMLHttpRequest();
+	        var loginBody = JSON.stringify({ email: email, password: password });
+	        xhr.onload = function () {
+	          if (xhr.status >= 200 && xhr.status < 300) {
+	            var loginResponse = JSON.parse(xhr.response)["data"]["attributes"];
+	            sessionStorage.setItem("userKey", loginResponse.api_key);
+	            console.log(sessionStorage.getItem("userKey"));
+	            alert('Hello, ' + email + '. Thank you for loggin in!');
+	            checkLoginActive();
+	          } else {
+	            alert("Login Failed. Please enter a valid user email and password.");
+	          }
+	        };
+	        xhr.open('POST', 'https://infinite-badlands-14969.herokuapp.com/api/v1/sessions');
+	        xhr.setRequestHeader("Content-Type", "application/json");
+	        xhr.send(loginBody);
+	      }
+	    }, {
 	      key: 'getWeather',
 	      value: function getWeather(location) {
 	        var _this = this;
 
 	        var xhr = new XMLHttpRequest();
-	        // let location = locationInput.value;
 	        xhr.onload = function () {
 	          if (xhr.status >= 200 && xhr.status < 300) {
 	            var weatherResponse = JSON.parse(xhr.response)["data"]["attributes"];
@@ -155,7 +197,6 @@
 	        var uv_index = weatherInfo.uv_index;
 
 	        glanceBox.innerHTML = '\n    <p class="current-summ">' + current_summary + '</p>\n    <p class="now">Now: ' + hourly_summary + '</p>\n    <p class="later">Later: ' + daily_summary + '</p>\n    ';
-
 	        dataBox.innerHTML = '\n    <p class="feels-like">Feels Like: ' + (feels_like + '&deg') + '</p>\n    <p class="humidity">Humidity: ' + humidity + '%</p>\n    <p class="visibility">Visibility: ' + visibility + ' miles</p>\n    <p class="uv-index">UV Index: ' + uv_index + '</p>\n    ';
 	      }
 	    }, {
@@ -201,13 +242,26 @@
 	    return WeatherGetter;
 	  }();
 
+	  loginEmail.addEventListener('keyup', checkLoginActive);
+	  loginPassword.addEventListener('keyup', checkLoginActive);
 	  locationInput.addEventListener('keyup', checkGetWeatherActive);
 	  locationInput.addEventListener('keypress', function (e) {
 	    if (e.keyCode === 13) {
 	      weatherButton.click();
 	    }
 	  });
+	  loginEmail.addEventListener('keypress', function (e) {
+	    if (e.keyCode === 13) {
+	      loginButton.click();
+	    }
+	  });
+	  loginPassword.addEventListener('keypress', function (e) {
+	    if (e.keyCode === 13) {
+	      loginButton.click();
+	    }
+	  });
 	  weatherButton.addEventListener('click', getAndSetWeather);
+	  loginButton.addEventListener('click', sendLoginRequest);
 	}
 
 /***/ })
