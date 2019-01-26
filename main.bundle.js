@@ -75,6 +75,8 @@
 	  var box1 = document.querySelector('.item1');
 	  var hourlyBox = document.querySelector('.hourly-box');
 	  var dailyBox = document.querySelector('.daily-box');
+	  var dataBox = document.querySelector('.data-box');
+	  var glanceBox = document.querySelector('.at-a-glance-box');
 
 	  var WeatherGetter = function () {
 	    function WeatherGetter() {
@@ -139,7 +141,7 @@
 
 	        timeBox.innerHTML = '\n    <p class="city-state">' + city + ', ' + state + '</p>\n    <p class="country">' + country + '</p>\n    <p class="date-time">' + formatted_date + '</p>';
 
-	        snapshotBox.innerHTML = '\n    <p class="snapshot-summary">' + summary + '</p>\n    <p class="current-temp-summary">' + (temp + '&deg') + '</p>\n    <p class="high-low">High: ' + (high + '&deg') + '  Low: ' + (low + '&deg') + '</p>\n    ';
+	        snapshotBox.innerHTML = '\n    <p class="snapshot-summary">' + summary + '</p>\n    <p class="current-temp-summary">' + (temp + '&deg') + '</p>\n    <p class="high-low">High: ' + (high + '&deg') + '  Low: ' + (low + '&deg') + '</p>';
 	      }
 	    }, {
 	      key: 'setBoxTwo',
@@ -151,6 +153,10 @@
 	        var humidity = weatherInfo.humidity;
 	        var visibility = weatherInfo.visibility;
 	        var uv_index = weatherInfo.uv_index;
+
+	        glanceBox.innerHTML = '\n    <p class="current-summ">' + current_summary + '</p>\n    <p class="now">Now: ' + hourly_summary + '</p>\n    <p class="later">Later: ' + daily_summary + '</p>\n    ';
+
+	        dataBox.innerHTML = '\n    <p class="feels-like">Feels Like: ' + (feels_like + '&deg') + '</p>\n    <p class="humidity">Humidity: ' + humidity + '%</p>\n    <p class="visibility">Visibility: ' + visibility + ' miles</p>\n    <p class="uv-index">UV Index: ' + uv_index + '</p>\n    ';
 	      }
 	    }, {
 	      key: 'setBoxThree',
@@ -169,25 +175,27 @@
 	          return '' + standardTime;
 	        };
 
+	        var dayOnly = function dayOnly(time) {
+	          var dateTime = new Date(time * 1000);
+	          var newTime = dateTime.toString().split(" ")[0];
+	          return newTime;
+	        };
+
 	        var hourlyDivs = weatherInfo.hourlies.slice(0, 8).map(function (hourly) {
 	          return '\n      <div class="hourly">\n        <p>' + hoursOnly(hourly.time) + '</p>\n        <p>' + hourly.icon + '<p>\n        <p>' + (hourly.temperature + '&deg') + '</p>\n      </div>';
 	        });
 
 	        var dailyDivs = weatherInfo.dailies.slice(0, 5).map(function (daily) {
-	          return '\n      <div class="daily">\n        <div class="daily-element">' + daily.time + '</div>\n        <div class="daily-element"><p>' + daily.icon + '</p><p class="daily-summary">' + daily.summary + '</p></div>\n        <div class="daily-element"><p>' + daily.precipType + '</p><p>' + Math.round(daily.precipProbability * 100) + '%</p></div>\n        <div class="daily-element">' + daily.temperatureHigh + '</div>\n        <div class="daily-element">' + daily.temperatureLow + '</div>\n      </div>\n      ';
+	          if (daily.precipType === undefined) {
+	            daily.precipType = "none";
+	          };
+
+	          return '\n      <div class="daily">\n        <div class="daily-element">' + dayOnly(daily.time) + '</div>\n        <div class="daily-element"><p>' + daily.icon + '</p><p class="daily-summary">' + daily.summary + '</p></div>\n        <div class="daily-element"><p>' + daily.precipType + '</p><p>' + Math.round(daily.precipProbability * 100) + '%</p></div>\n        <div class="daily-element">' + (daily.temperatureHigh + '&deg') + '</div>\n        <div class="daily-element">' + (daily.temperatureLow + '&deg') + '</div>\n      </div>\n      ';
 	        });
 
 	        hourlyBox.innerHTML = hourlyDivs.join(" ");
 	        dailyBox.innerHTML = dailyDivs.join(" ");
 	      }
-
-	      // getWeather(place) {
-	      //   fetch(this.url + `location=${place}`)
-	      //   .then(response => response.json())
-	      //   .then(weatherData => this.weatherData = weatherData.data.attributes)
-	      //   // .then(weather => this.setWeather(weather))
-	      // }
-
 	    }]);
 
 	    return WeatherGetter;

@@ -155,7 +155,34 @@ h4 {
   flex: 1;
 }
 
-.city-state {
+.details {
+  display: flex;
+  flex-direction: row;
+}
+
+.details p {
+  margin: 5px;
+}
+
+.data-box p {
+  margin: 5px;
+}
+
+.at-a-glance-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex: 1;
+}
+
+.data-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex: 1;
+}
+
+.city-state, .current-summ {
   font-size: 30px;
 }
 
@@ -163,5 +190,11 @@ h4 {
   font-size: 40px;
 }
 
-
-
+.now,
+.later,
+.feels-like,
+.humidity,
+.visibility,
+.uv-index {
+  font-size: 14px;
+}
