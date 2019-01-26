@@ -22,11 +22,12 @@ body {
 }
 
 .titlebar {
+  display: flex;
+  flex-direction: row;
   width: 100%;
   background-color: #522b47;
   margin-block-end: 10px;
-  text-align: left;
-  /* align-content: space-around; */
+  text-align: center;
 }
 
 .title {
@@ -37,13 +38,15 @@ body {
   margin-right: 0px;
   font-size: 40px;
   height: 60px;
-  display: inline;
+  display: flex;
   text-align: left;
+  flex: 7;
+  flex-direction: column;
 }
 
-.login {
-  display: inline;
-  text-align: right;
+.login-logout {
+  text-align: left;
+  flex: 4;
 }
 
 .sub-title {
