@@ -63,6 +63,39 @@
 	    }
 	  };
 
+	  // function registerUser() {
+	  //   prompt("Please enter your details below")
+	  // }
+
+	  var checkLogInLogOut = function checkLogInLogOut() {
+	    if (sessionStorage.getItem("userKey") !== null) {
+	      logInLogOut.innerHTML = '\n      <button class="logout-button button">Log Out</button>';
+	      var logoutButton = document.querySelector('.logout-button');
+	      logoutButton.addEventListener('click', logOut);
+	    } else {
+	      logInLogOut.innerHTML = '\n      <input class="login-email" type="text" placeholder="Email">\n      <input class="login-password" type="text" placeholder="Password">\n      <button class="login-button button" disabled>Log In</button>\n';
+
+	      loginEmail = document.querySelector('.login-email');
+	      loginPassword = document.querySelector('.login-password');
+	      loginButton = document.querySelector('.login-button');
+	      // registerButton = document.querySelector('.register-button');
+	      // registerButton.addEventListener('click', registerUser);
+	      loginEmail.addEventListener('keyup', checkLoginActive);
+	      loginPassword.addEventListener('keyup', checkLoginActive);
+	      loginEmail.addEventListener('keypress', function (e) {
+	        if (e.keyCode === 13) {
+	          loginButton.click();
+	        }
+	      });
+	      loginPassword.addEventListener('keypress', function (e) {
+	        if (e.keyCode === 13) {
+	          loginButton.click();
+	        }
+	      });
+	      loginButton.addEventListener('click', sendLoginRequest);
+	    }
+	  };
+
 	  var checkLoginActive = function checkLoginActive() {
 	    if (loginEmail.value !== "" && loginPassword.value !== "" && sessionStorage.getItem("userKey") == null) {
 	      loginButton.disabled = false;
@@ -87,12 +120,19 @@
 	    }
 	  };
 
+	  var logOut = function logOut() {
+	    sessionStorage.clear();
+	    alert("Successfully Logged Out.");
+	    checkLogInLogOut();
+	  };
+
+	  var loginEmail = void 0;
+	  var loginPassword = void 0;
+	  var loginButton = void 0;
+	  var registerButton = void 0;
+	  var logInLogOut = document.querySelector('.login-logout');
 	  var weatherButton = document.querySelector('.weather-button');
 	  var locationInput = document.querySelector('.location-field');
-	  var loginButton = document.querySelector('.login-button');
-	  var loginEmail = document.querySelector('.login-email');
-	  var loginPassword = document.querySelector('.login-password');
-
 	  var timeBox = document.querySelector('.time-box');
 	  var snapshotBox = document.querySelector('.snapshot-box');
 	  var box1 = document.querySelector('.item1');
@@ -118,9 +158,9 @@
 	          if (xhr.status >= 200 && xhr.status < 300) {
 	            var loginResponse = JSON.parse(xhr.response)["data"]["attributes"];
 	            sessionStorage.setItem("userKey", loginResponse.api_key);
-	            console.log(sessionStorage.getItem("userKey"));
-	            alert('Hello, ' + email + '. Thank you for loggin in!');
+	            alert('Hello, ' + email + '. Thank you for logging in!');
 	            checkLoginActive();
+	            checkLogInLogOut();
 	          } else {
 	            alert("Login Failed. Please enter a valid user email and password.");
 	          }
@@ -170,7 +210,6 @@
 	    }, {
 	      key: 'setBoxOne',
 	      value: function setBoxOne(weatherInfo) {
-	        console.log(weatherInfo);
 	        var city = weatherInfo.city;
 	        var state = weatherInfo.state;
 	        var country = weatherInfo.country;
@@ -181,9 +220,9 @@
 	        var summary = weatherInfo.summary;
 	        var temp = weatherInfo.current_temp;
 
-	        timeBox.innerHTML = '\n    <p class="city-state">' + city + ', ' + state + '</p>\n    <p class="country">' + country + '</p>\n    <p class="date-time">' + formatted_date + '</p>';
+	        timeBox.innerHTML = '\n      <p class="city-state">' + city + ', ' + state + '</p>\n      <p class="country">' + country + '</p>\n      <p class="date-time">' + formatted_date + '</p>';
 
-	        snapshotBox.innerHTML = '\n    <p class="snapshot-summary">' + summary + '</p>\n    <p class="current-temp-summary">' + (temp + '&deg') + '</p>\n    <p class="high-low">High: ' + (high + '&deg') + '  Low: ' + (low + '&deg') + '</p>';
+	        snapshotBox.innerHTML = '\n      <p class="snapshot-summary">' + summary + '</p>\n      <p class="current-temp-summary">' + (temp + '&deg') + '</p>\n      <p class="high-low">High: ' + (high + '&deg') + '  Low: ' + (low + '&deg') + '</p>';
 	      }
 	    }, {
 	      key: 'setBoxTwo',
@@ -196,8 +235,8 @@
 	        var visibility = weatherInfo.visibility;
 	        var uv_index = weatherInfo.uv_index;
 
-	        glanceBox.innerHTML = '\n    <p class="current-summ">' + current_summary + '</p>\n    <p class="now">Now: ' + hourly_summary + '</p>\n    <p class="later">Later: ' + daily_summary + '</p>\n    ';
-	        dataBox.innerHTML = '\n    <p class="feels-like">Feels Like: ' + (feels_like + '&deg') + '</p>\n    <p class="humidity">Humidity: ' + humidity + '%</p>\n    <p class="visibility">Visibility: ' + visibility + ' miles</p>\n    <p class="uv-index">UV Index: ' + uv_index + '</p>\n    ';
+	        glanceBox.innerHTML = '\n      <p class="current-summ">' + current_summary + '</p>\n      <p class="now">Now: ' + hourly_summary + '</p>\n      <p class="later">Later: ' + daily_summary + '</p>\n      ';
+	        dataBox.innerHTML = '\n      <p class="feels-like">Feels Like: ' + (feels_like + '&deg') + '</p>\n      <p class="humidity">Humidity: ' + humidity + '%</p>\n      <p class="visibility">Visibility: ' + visibility + ' miles</p>\n      <p class="uv-index">UV Index: ' + uv_index + '</p>\n      ';
 	      }
 	    }, {
 	      key: 'setBoxThree',
@@ -223,7 +262,7 @@
 	        };
 
 	        var hourlyDivs = weatherInfo.hourlies.slice(0, 8).map(function (hourly) {
-	          return '\n      <div class="hourly">\n        <p>' + hoursOnly(hourly.time) + '</p>\n        <p>' + hourly.icon + '<p>\n        <p>' + (hourly.temperature + '&deg') + '</p>\n      </div>';
+	          return '\n        <div class="hourly">\n          <p>' + hoursOnly(hourly.time) + '</p>\n          <p>' + hourly.icon + '<p>\n          <p>' + (hourly.temperature + '&deg') + '</p>\n        </div>';
 	        });
 
 	        var dailyDivs = weatherInfo.dailies.slice(0, 5).map(function (daily) {
@@ -231,7 +270,7 @@
 	            daily.precipType = "none";
 	          };
 
-	          return '\n      <div class="daily">\n        <div class="daily-element">' + dayOnly(daily.time) + '</div>\n        <div class="daily-element"><p>' + daily.icon + '</p><p class="daily-summary">' + daily.summary + '</p></div>\n        <div class="daily-element"><p>' + daily.precipType + '</p><p>' + Math.round(daily.precipProbability * 100) + '%</p></div>\n        <div class="daily-element">' + (daily.temperatureHigh + '&deg') + '</div>\n        <div class="daily-element">' + (daily.temperatureLow + '&deg') + '</div>\n      </div>\n      ';
+	          return '\n        <div class="daily">\n          <div class="daily-element">' + dayOnly(daily.time) + '</div>\n          <div class="daily-element"><p>' + daily.icon + '</p><p class="daily-summary">' + daily.summary + '</p></div>\n          <div class="daily-element"><p>' + daily.precipType + '</p><p>' + Math.round(daily.precipProbability * 100) + '%</p></div>\n          <div class="daily-element">' + (daily.temperatureHigh + '&deg') + '</div>\n          <div class="daily-element">' + (daily.temperatureLow + '&deg') + '</div>\n        </div>\n        ';
 	        });
 
 	        hourlyBox.innerHTML = hourlyDivs.join(" ");
@@ -242,26 +281,14 @@
 	    return WeatherGetter;
 	  }();
 
-	  loginEmail.addEventListener('keyup', checkLoginActive);
-	  loginPassword.addEventListener('keyup', checkLoginActive);
+	  document.addEventListener('DOMContentLoaded', checkLogInLogOut);
 	  locationInput.addEventListener('keyup', checkGetWeatherActive);
 	  locationInput.addEventListener('keypress', function (e) {
 	    if (e.keyCode === 13) {
 	      weatherButton.click();
 	    }
 	  });
-	  loginEmail.addEventListener('keypress', function (e) {
-	    if (e.keyCode === 13) {
-	      loginButton.click();
-	    }
-	  });
-	  loginPassword.addEventListener('keypress', function (e) {
-	    if (e.keyCode === 13) {
-	      loginButton.click();
-	    }
-	  });
 	  weatherButton.addEventListener('click', getAndSetWeather);
-	  loginButton.addEventListener('click', sendLoginRequest);
 	}
 
 /***/ })
