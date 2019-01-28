@@ -39,8 +39,5 @@
     "webpack": "^1.15.0",
     "webpack-dev-server": "^1.16.2"
   },
-  "dependencies": {
-    "dotenv": "^6.2.0",
-    "pryjs": "^1.0.3"
-  }
+  "dependencies": {}
 }

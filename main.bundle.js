@@ -69,7 +69,7 @@
 
 	  var checkLogInLogOut = function checkLogInLogOut() {
 	    if (sessionStorage.getItem("userKey") !== null) {
-	      logInLogOut.innerHTML = '\n      <button class="logout-button button">Log Out</button>';
+	      logInLogOut.innerHTML = '\n      <p>Currently logged in as ' + sessionStorage.getItem("user_email") + '</p>\n      <button class="logout-button button">Log Out</button>';
 	      var logoutButton = document.querySelector('.logout-button');
 	      logoutButton.addEventListener('click', logOut);
 	    } else {
@@ -111,6 +111,11 @@
 	    weather.getWeather(locationInput.value);
 	  };
 
+	  var getNewWeather = function getNewWeather(place) {
+	    var weather = new WeatherGetter();
+	    weather.getWeather(place);
+	  };
+
 	  var sendLoginRequest = function sendLoginRequest() {
 	    if (sessionStorage.getItem("userKey") !== null) {
 	      alert("Already logged in.");
@@ -122,14 +127,17 @@
 
 	  var logOut = function logOut() {
 	    sessionStorage.clear();
+	    favDrop.innerHTML = "";
 	    alert("Successfully Logged Out.");
 	    checkLogInLogOut();
 	  };
 
+	  sessionStorage.clear();
 	  var loginEmail = void 0;
 	  var loginPassword = void 0;
 	  var loginButton = void 0;
 	  var registerButton = void 0;
+	  var favSelector = void 0;
 	  var logInLogOut = document.querySelector('.login-logout');
 	  var weatherButton = document.querySelector('.weather-button');
 	  var locationInput = document.querySelector('.location-field');
@@ -140,6 +148,7 @@
 	  var dailyBox = document.querySelector('.daily-box');
 	  var dataBox = document.querySelector('.data-box');
 	  var glanceBox = document.querySelector('.at-a-glance-box');
+	  var favDrop = document.querySelector('.fav-bar-container');
 
 	  var WeatherGetter = function () {
 	    function WeatherGetter() {
@@ -152,13 +161,17 @@
 	    _createClass(WeatherGetter, [{
 	      key: 'sendLogin',
 	      value: function sendLogin(email, password) {
+	        var _this = this;
+
 	        var xhr = new XMLHttpRequest();
 	        var loginBody = JSON.stringify({ email: email, password: password });
 	        xhr.onload = function () {
 	          if (xhr.status >= 200 && xhr.status < 300) {
+	            sessionStorage.setItem("user_email", email);
 	            var loginResponse = JSON.parse(xhr.response)["data"]["attributes"];
 	            sessionStorage.setItem("userKey", loginResponse.api_key);
 	            alert('Hello, ' + email + '. Thank you for logging in!');
+	            _this.getFavorites();
 	            checkLoginActive();
 	            checkLogInLogOut();
 	          } else {
@@ -170,17 +183,46 @@
 	        xhr.send(loginBody);
 	      }
 	    }, {
+	      key: 'getFavorites',
+	      value: function getFavorites() {
+	        var _this2 = this;
+
+	        var xhr = new XMLHttpRequest();
+	        xhr.onload = function () {
+	          if (xhr.status >= 200 && xhr.status < 300) {
+	            var favoritesResponse = JSON.parse(xhr.response)["data"];
+	            _this2.renderFavorites(favoritesResponse);
+	          }
+	        };
+	        xhr.open('GET', 'https://infinite-badlands-14969.herokuapp.com/api/v1/favorites?api_key=' + sessionStorage.getItem("userKey"));
+	        xhr.setRequestHeader("Content-Type", "application/json");
+	        xhr.send();
+	      }
+	    }, {
+	      key: 'renderFavorites',
+	      value: function renderFavorites(responseData) {
+	        var favLocations = responseData.map(function (fav) {
+	          var location = fav.attributes.location;
+	          return '\n          <option value="' + location + '">' + location + '</option>';
+	        }).join(" ");
+	        favDrop.innerHTML = '\n      <form class="favs">\n        <select class="fav-bar" name="Favorites">\n        <option value="" disabled selected>- Select Favorite Location-</option>\n        ' + favLocations + '\n        </select>\n      </form>';
+	        favSelector = document.querySelector('.fav-bar');
+	        favSelector.addEventListener('change', function (e) {
+	          getNewWeather(e.target.value);
+	        });
+	      }
+	    }, {
 	      key: 'getWeather',
 	      value: function getWeather(location) {
-	        var _this = this;
+	        var _this3 = this;
 
 	        var xhr = new XMLHttpRequest();
 	        xhr.onload = function () {
 	          if (xhr.status >= 200 && xhr.status < 300) {
 	            var weatherResponse = JSON.parse(xhr.response)["data"]["attributes"];
-	            _this.setBoxOne(weatherResponse);
-	            _this.setBoxTwo(weatherResponse);
-	            _this.setBoxThree(weatherResponse);
+	            _this3.setBoxOne(weatherResponse);
+	            _this3.setBoxTwo(weatherResponse);
+	            _this3.setBoxThree(weatherResponse);
 	          } else {
 	            alert("Please enter a valid location");
 	          }
