@@ -4,7 +4,7 @@
 ![screenshot](./ScreenShot.png)
 
 
-Jacket Weather is a front-end-only weather app designed to allow a user to lookup weather forecasts by location.  Jacket Weather consumes data from the Sweater Weather API, which utilizes Google and Dark Sky APIs for geocoding and weather data, respectively.
+Jacket Weather is a front-end-only weather app designed to allow a user to lookup weather forecasts by location. It was developed using only HTML, CSS, and Javascript. Jacket Weather consumes data from the Sweater Weather API, which utilizes Google and Dark Sky APIs for geocoding and weather data, respectively.
 
 ### Setup:
 
