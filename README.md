@@ -1,79 +1,38 @@
-# Self-Directed Front-End Start Kit
+# README
+## Jacket Weather
 
-## Initial Setup
+![screenshot](./ScreenShot.png)
 
-1. Clone this starter kit repository and rename the repository to anything you'd like in one command:
 
-  ```shell
-  git clone git@github.com:turingschool-projects/self-directed-fe-starter.git <name of your choice>
-  ```
-2. Change into the new director directory.
+Jacket Weather is a front-end-only weather app designed to allow a user to lookup weather forecasts by location.  Jacket Weather consumes data from the Sweater Weather API, which utilizes Google and Dark Sky APIs for geocoding and weather data, respectively.
 
-3. Remove the default remote (origin):
+### Setup:
 
-  ```shell
-  git remote rm origin
-  ```
+To begin, clone this repo:
 
-4. Create a new repository on GitHub.
-
-5. Add your new repository remote - **your remote URL and user name will be different in the command below**
-
-  ```shell
-  git remote add origin git@github.com:<YOUR GITHUB NAME>/<PROJECT NAME>.git
-  ```
-
-6. Install the dependencies of the starter kit:
-
-  ```shell
-  npm install
-  ```
-
-7. Add, commit, and push up to your repository:
-
-  ```shell
-  git add .
-  git commit -m "Initial commit using starter kit"
-  git push origin master
-  ```
-
-## Running the Server Locally
-
-To see your code in action locally, you need to fire up a development server. Use the command:
-
-```shell
-npm start
 ```
+git@github.com:DanHutch/jacket-weather.git
+```
+After you `cd` into the project directory, run `npm install` from the command line.
 
-Once the server is running, visit in your browser:
+At this point, you should be able to view the locally hosted app at http://localhost:8080/ after starting a local server using the command `npm start`.
 
-* `http://localhost:8080/` to run your application.
+### Back-End
+Jacket Weather uses the Sweater Weather back-end API found at https://github.com/DanHutch/sweater_weather and hosted on Heroku at https://infinite-badlands-14969.herokuapp.com/ (no page exists at this address, but this is the base URL for the API endpoints.)
 
+### Future Iterations:
 
-## GitHub Pages Setup
+- Add new user registration functionality.
 
-This site will be served from GitHub Pages in production.
+- Add functionality for logged-in user adding a new favorite location, as well as deleting favorites.
 
-In order to see your application running on production:
-
-1. From the command line, run `npm run build`.
-
-2. Commit and push your application to GitHub.
-
-3. Visit your repository on Github
-
-4. Go to Settings
-
-5. Under the Github Pages section of Options, select 'master' as your source and click `Save`
-
-Be sure to `npm run build` and commit before each push to master. A few seconds after you push up, you should be able to see your application at <https://your-github-username.github.io/project-name>.
+- Add Icons to weather data displayed on page.
 
 
-## Built With
+### Contributing:
 
-* [JavaScript](https://www.javascript.com/)
-* [jQuery](https://jquery.com/)
-* [Express](https://expressjs.com/)
-* [Mocha](https://mochajs.org/)
-* [Chai](https://chaijs.com/)
+In order to contribute, please fork this repo, then clone your new repo and create a branch for your feature.
 
+Please make sure to test your feature thoroughly, then create and submit a pull request back to this repository.
+
+Please contact Dan Hutchinson (DanHutch) on Github if you have any questions, etc. Thank you!
